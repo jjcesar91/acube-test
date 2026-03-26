@@ -60,6 +60,7 @@ docker compose logs -f web      # web server only
 The test suite uses **SQLite** (no Docker needed) and a `sync://` Messenger transport (the worker runs inline — no separate process required).
 
 ```bash
+composer install
 php bin/phpunit
 ```
 
