@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Messenger\MessageBusInterface;
+use App\Enum\JobStatus;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Uid\Uuid;
 
@@ -78,7 +79,7 @@ final class JobController extends AbstractController
             return $job;
         }
 
-        if ($job->getStatus() !== \App\Enum\JobStatus::Completed) {
+        if ($job->getStatus() !== JobStatus::Completed) {
             return $this->problem(
                 Response::HTTP_CONFLICT,
                 'Job not completed',
