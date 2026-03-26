@@ -1,5 +1,37 @@
 
 services:
+  web:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    command: ["php", "-S", "0.0.0.0:8000", "-t", "/app/public"]
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      APP_ENV: dev
+      DATABASE_URL: "postgresql://${POSTGRES_USER:-app}:${POSTGRES_PASSWORD:-!ChangeMe!}@database:5432/${POSTGRES_DB:-app}?serverVersion=16&charset=utf8"
+      MESSENGER_TRANSPORT_DSN: "doctrine://default?auto_setup=0"
+    ports:
+      - "8000:8000"
+    volumes:
+      - uploads_data:/app/var/uploads
+
+  worker:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    command: ["php", "bin/console", "messenger:consume", "async", "--no-interaction", "-vv"]
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      APP_ENV: dev
+      DATABASE_URL: "postgresql://${POSTGRES_USER:-app}:${POSTGRES_PASSWORD:-!ChangeMe!}@database:5432/${POSTGRES_DB:-app}?serverVersion=16&charset=utf8"
+      MESSENGER_TRANSPORT_DSN: "doctrine://default?auto_setup=0"
+    volumes:
+      - uploads_data:/app/var/uploads
+
 ###> doctrine/doctrine-bundle ###
   database:
     image: postgres:${POSTGRES_VERSION:-16}-alpine
@@ -23,3 +55,4 @@ volumes:
 ###> doctrine/doctrine-bundle ###
   database_data:
 ###< doctrine/doctrine-bundle ###
+  uploads_data:

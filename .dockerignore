@@ -1,0 +1,6 @@
+vendor/
+var/cache/
+var/log/
+var/test.db
+.env.local
+.env.*.local
