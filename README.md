@@ -69,9 +69,9 @@ Expected output:
 ```
 PHPUnit 12.x
 
-..................                                18 / 18 (100%)
+.............................                     29 / 29 (100%)
 
-Tests: 18, Assertions: 59, OK
+Tests: 29, Assertions: 82, OK
 ```
 
 ---
