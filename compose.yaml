@@ -9,7 +9,8 @@ services:
       database:
         condition: service_healthy
     environment:
-      APP_ENV: dev
+      APP_ENV: prod
+      APP_SECRET: "acube-test-secret-key"
       DATABASE_URL: "postgresql://${POSTGRES_USER:-app}:${POSTGRES_PASSWORD:-!ChangeMe!}@database:5432/${POSTGRES_DB:-app}?serverVersion=16&charset=utf8"
       MESSENGER_TRANSPORT_DSN: "doctrine://default?auto_setup=0"
     ports:
@@ -26,7 +27,8 @@ services:
       database:
         condition: service_healthy
     environment:
-      APP_ENV: dev
+      APP_ENV: prod
+      APP_SECRET: "acube-test-secret-key"
       DATABASE_URL: "postgresql://${POSTGRES_USER:-app}:${POSTGRES_PASSWORD:-!ChangeMe!}@database:5432/${POSTGRES_DB:-app}?serverVersion=16&charset=utf8"
       MESSENGER_TRANSPORT_DSN: "doctrine://default?auto_setup=0"
     volumes:

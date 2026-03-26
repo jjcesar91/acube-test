@@ -50,9 +50,7 @@ final class ConverterFactoryTest extends TestCase
     {
         $job    = new Job('/tmp/input.csv', InputFormat::Csv, OutputFormat::Json);
         $first  = $this->makeConverter(supports: true);
-        $second = $this->makeConverter(supports: true);
-
-        // The second converter's supports() should never be evaluated
+        $second = $this->createMock(ConverterInterface::class);
         $second->expects($this->never())->method('supports');
 
         $factory = new ConverterFactory([$first, $second]);
@@ -94,7 +92,7 @@ final class ConverterFactoryTest extends TestCase
 
     private function makeConverter(bool $supports): ConverterInterface
     {
-        $mock = $this->createMock(ConverterInterface::class);
+        $mock = $this->createStub(ConverterInterface::class);
         $mock->method('supports')->willReturn($supports);
 
         return $mock;

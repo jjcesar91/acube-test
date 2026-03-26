@@ -14,6 +14,7 @@ use App\Repository\JobRepository;
 use App\Service\Conversion\ConverterFactory;
 use App\Service\Conversion\ConverterInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -47,6 +48,7 @@ final class ConvertFileMessageHandlerTest extends TestCase
     // Happy path
     // -------------------------------------------------------------------------
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testHandlerMarksJobAsCompletedOnSuccess(): void
     {
         $job   = new Job('/tmp/input.json', InputFormat::Json, OutputFormat::Json);
@@ -54,7 +56,7 @@ final class ConvertFileMessageHandlerTest extends TestCase
 
         $outputPath = sys_get_temp_dir() . '/output.json';
 
-        $converter = $this->createMock(ConverterInterface::class);
+        $converter = $this->createStub(ConverterInterface::class);
         $converter->method('supports')->willReturn(true);
         $converter->method('convert')->willReturn($outputPath);
 
@@ -75,6 +77,7 @@ final class ConvertFileMessageHandlerTest extends TestCase
     // Job not found
     // -------------------------------------------------------------------------
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testHandlerLogsAndReturnsEarlyWhenJobIsNotFound(): void
     {
         $jobId = Uuid::v7();
@@ -103,7 +106,7 @@ final class ConvertFileMessageHandlerTest extends TestCase
         $jobId        = $job->getId();
         $errorMessage = 'Disk full';
 
-        $converter = $this->createMock(ConverterInterface::class);
+        $converter = $this->createStub(ConverterInterface::class);
         $converter->method('supports')->willReturn(true);
         $converter->method('convert')->willThrowException(new \RuntimeException($errorMessage));
 
@@ -129,12 +132,13 @@ final class ConvertFileMessageHandlerTest extends TestCase
      * When no converter supports the job (e.g. unsupported format pair),
      * ConverterFactory throws RuntimeException and the handler marks the job failed.
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testHandlerMarksJobAsFailedWhenNoConverterSupports(): void
     {
         $job   = new Job('/tmp/input.json', InputFormat::Json, OutputFormat::Json);
         $jobId = $job->getId();
 
-        $unsupportedConverter = $this->createMock(ConverterInterface::class);
+        $unsupportedConverter = $this->createStub(ConverterInterface::class);
         $unsupportedConverter->method('supports')->willReturn(false);
 
         $this->entityManager->expects($this->exactly(2))->method('flush');

@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Service\Conversion;
 
 use App\Entity\Job;
-use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
+use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
 final class ConverterFactory
 {
     /** @param iterable<ConverterInterface> $converters */
     public function __construct(
-        #[TaggedIterator('app.converter')]
+        #[AutowireIterator('app.converter')]
         private readonly iterable $converters,
     ) {
     }
