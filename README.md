@@ -21,7 +21,7 @@ A client uploads a file (CSV, JSON, XLSX, ODS), specifies the desired output for
 src/        Application source 
 tests/      PHPUnit test suite (unit + E2E)
 migrations/ Doctrine migration that creates the jobs table
-docker/php/ Dockerfile, entrypoint and supervisord config
+docker/php/ Dockerfile and entrypoint script
 var/        Runtime files (cache, uploaded files)
 ```
 
