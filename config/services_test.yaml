@@ -1,0 +1,12 @@
+# yaml-language-server: $schema=../vendor/symfony/dependency-injection/Loader/schema/services.schema.json
+
+parameters:
+    app.upload_dir: '%kernel.project_dir%/var/uploads_test'
+
+services:
+    # Replace DummyConverter (sleep 130 s) with FastConverter (instant) so the
+    # E2E test finishes in milliseconds instead of blocking for two minutes.
+    App\Service\Conversion\DummyConverter:
+        class: App\Tests\Doubles\FastConverter
+        tags: ['app.converter']
+        autoconfigure: false
